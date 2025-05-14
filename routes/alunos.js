@@ -1,23 +1,11 @@
-const Aluno = require('../models/aluno');
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/alunoController');
 
-exports.index = async (req, res) => {
-  const alunos = await Aluno.findAll();
-  res.render('alunos/index', { alunos });
-};
+router.get('/', controller.index);
+router.post('/', controller.store);
+router.post('/edit/:id', controller.update);
+router.post('/delete/:id', controller.destroy);
+router.get('/curso/:curso_id', controller.byCurso);
 
-exports.store = async (req, res) => {
-  await Aluno.create(req.body);
-  res.redirect('/alunos');
-};
-
-exports.update = async (req, res) => {
-  const { id } = req.params;
-  await Aluno.update(id, req.body);
-  res.redirect('/alunos');
-};
-
-exports.destroy = async (req, res) => {
-  const { id } = req.params;
-  await Aluno.delete(id);
-  res.redirect('/alunos');
-};
+module.exports = router;
